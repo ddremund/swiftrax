@@ -1,0 +1,16 @@
+
+*.xcplayground
+
+*.xctimeline
+
+*.xcuserstate
+
+*.xcsettings
+
+*.xcworkspacedata
+
+*.xcbkptlist
+
+*.xcscheme
+
+swiftrax-cli/swiftrax_cli.xcodeproj/xcuserdata/ddremund.xcuserdatad/xcschemes/xcschememanagement.plist
