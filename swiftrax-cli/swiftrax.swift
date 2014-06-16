@@ -8,18 +8,32 @@
 
 import Foundation
 
-class SwiftRAX
+struct AuthToken
 {
+    struct _tenant
+    {
+        var id: String = ""
+        var name: String = ""
+    }
+    var tenant: _tenant = _tenant()
+    var id: String = ""
+    var expiration = NSDate()
+    var authType: String = ""
+}
+
+class SwiftRAX: NSObject
+{
+    
     class var auth:ServiceCatalog {
         return ServiceCatalogSharedInstance
     }
     
     init()
     {
-        serviceCatalog = ServiceCatalog()
+        
     }
     
-    var serviceCatalog: ServiceCatalog?
+    
 }
 
 let ServiceCatalogSharedInstance = ServiceCatalog()

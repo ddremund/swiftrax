@@ -8,21 +8,25 @@
 
 import Foundation
 
-class ServiceCatalog: NSObject, NSURLConnectionDelegate
+class ServiceCatalog
 {
     
     init()
     {
-        super.init()
         NSLog("init service catalog")
+        queue = NSOperationQueue()
+        authenticated = false
+        catalog = NSDictionary()
+        token = AuthToken()
     }
     
-    init(user: String, password: String)
+    convenience init(user: String, password: String)
     {
-        super.init()
-        NSLog("init service catalog")
+        NSLog("init service catalog and auth")
+        self.init()
         authenticateToEndpoint(authEndpoint, user: user, password: password)
     }
+    
     
     func authenticateWithUser(user: String, password: String)
     {
@@ -45,15 +49,27 @@ class ServiceCatalog: NSObject, NSURLConnectionDelegate
         
         NSURLConnection.sendAsynchronousRequest(request, queue: self.queue as NSOperationQueue, completionHandler: {(response, respData, error) in
             NSLog("got data async")
-            self.JSONResult = NSJSONSerialization.JSONObjectWithData(respData, options: NSJSONReadingOptions.MutableContainers, error: nil) as? NSDictionary
-            self.lastResponse = response}
+            self.catalog = NSJSONSerialization.JSONObjectWithData(respData, options: NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary
+            self.lastResponse = response
+            //self.token = self.catalog!.objectForKey("access").objectForKey("token") as? NSDictionary}
+            //self.updateToken(self.catalog["access"]["token"] as NSDictionary)
+            self.authenticated = true}
         )
     }
     
+    /*func updateToken(tokenDict: NSDictionary)
+    {
+        token.id = tokenDict["id"] as String
+        token.tenant.name = tokenDict["tenant"]["id"] as String
+        token.tenant.id = tokenDict["tenant"]["name"] as String
+    }*/
     
     let authEndpoint = NSURL(string: "https://identity.api.rackspacecloud.com/v2.0/tokens")
     var lastResponse: NSURLResponse?
-    var JSONResult: NSDictionary?
-    var queue = NSOperationQueue()
+    var catalog: NSDictionary
+    var token: AuthToken
+    var queue: NSOperationQueue
+    var authenticated: Bool
+    
 }
 

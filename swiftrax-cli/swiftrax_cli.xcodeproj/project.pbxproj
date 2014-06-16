@@ -11,6 +11,7 @@
 		96E07EB3194CBE420011BF96 /* util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E07EB2194CBE420011BF96 /* util.swift */; };
 		96E07EB5194CBE5D0011BF96 /* ServiceCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E07EB4194CBE5D0011BF96 /* ServiceCatalog.swift */; };
 		96E07EB7194CC9740011BF96 /* swiftrax.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E07EB6194CC9740011BF96 /* swiftrax.swift */; };
+		96E07F33194E4F2B0011BF96 /* BaseResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E07F32194E4F2B0011BF96 /* BaseResource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,6 +33,7 @@
 		96E07EB2194CBE420011BF96 /* util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = util.swift; sourceTree = "<group>"; };
 		96E07EB4194CBE5D0011BF96 /* ServiceCatalog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceCatalog.swift; sourceTree = "<group>"; };
 		96E07EB6194CC9740011BF96 /* swiftrax.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = swiftrax.swift; path = ../swiftrax.swift; sourceTree = "<group>"; };
+		96E07F32194E4F2B0011BF96 /* BaseResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseResource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,10 +78,19 @@
 		96E07F30194D7E110011BF96 /* swiftrax */ = {
 			isa = PBXGroup;
 			children = (
+				96E07F32194E4F2B0011BF96 /* BaseResource.swift */,
+				96E07F31194E413B0011BF96 /* Resource */,
 				96E07EB4194CBE5D0011BF96 /* ServiceCatalog.swift */,
 				96E07EB6194CC9740011BF96 /* swiftrax.swift */,
 			);
 			name = swiftrax;
+			sourceTree = "<group>";
+		};
+		96E07F31194E413B0011BF96 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resource;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,6 +152,7 @@
 				96E07EAF194C1B510011BF96 /* main.swift in Sources */,
 				96E07EB7194CC9740011BF96 /* swiftrax.swift in Sources */,
 				96E07EB5194CBE5D0011BF96 /* ServiceCatalog.swift in Sources */,
+				96E07F33194E4F2B0011BF96 /* BaseResource.swift in Sources */,
 				96E07EB3194CBE420011BF96 /* util.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
