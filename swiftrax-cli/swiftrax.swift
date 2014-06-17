@@ -8,20 +8,20 @@
 
 import Foundation
 
-struct AuthToken
-{
-    struct _tenant
-    {
+struct AuthToken {
+    
+    struct _tenant {
         var id: String = ""
         var name: String = ""
     }
+    
     var tenant: _tenant = _tenant()
     var id: String = ""
     var expiration = NSDate()
     var authType: String = ""
     
-    func print()
-    {
+    func print() {
+        
         println("Auth Token")
         println("ID: \(id)")
         println("Tenant ID: \(tenant.id)")
@@ -32,31 +32,25 @@ struct AuthToken
     }
 }
 
-func sendRequestAndReAuth(#url: NSURL, #method: String, #body: String, contentType: String = "application/json", retry: Bool = true, handler: (NSURLResponse, NSData, NSError)->())
-{
+func sendRequestAndReAuth(#url: NSURL, #method: String, #body: String, contentType: String = "application/json", retry: Bool = true, handler: (NSURLResponse, NSData, NSError)->Void) {
+    
     var request = NSMutableURLRequest(URL: url)
     request.HTTPMethod = method
     request.HTTPBody = body.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
     request.setValue(contentType, forHTTPHeaderField: "Content-Type")
     NSURLConnection.sendAsynchronousRequest(request, queue: requestQueue, completionHandler:
         {(response, respData, error) in
-            if let HTTPResponse = response as? NSHTTPURLResponse
-            {
-                if HTTPResponse.statusCode == 401
-                {
-                    if retry
-                    {
+            if let HTTPResponse = response as? NSHTTPURLResponse {
+                if HTTPResponse.statusCode == 401 {
+                    if retry {
                         SwiftRAX.auth.reAuthenticate()
                         sendRequestAndReAuth(url: url, method: method, body: body, contentType: contentType, retry: false, handler)
                     }
-                    else
-                    {
+                    else {
                         println("Failure to re-authenticate")
                     }
-                    
                 }
-                else
-                {
+                else {
                     handler(response, respData, error)
                 }
             }
@@ -64,20 +58,22 @@ func sendRequestAndReAuth(#url: NSURL, #method: String, #body: String, contentTy
     )
 }
 
-class SwiftRAX: NSObject
+class AuthContext: NSObject
 {
     
-    class var auth:ServiceCatalog {
-        return ServiceCatalogSharedInstance
+    class var defaultContext:AuthContext {
+        return DefaultAuthContextInstance
     }
     
-    init()
-    {
+    init() {
         
+        catalog = ServiceCatalog()
     }
+    
+    let catalog: ServiceCatalog
     
     
 }
 
-let ServiceCatalogSharedInstance = ServiceCatalog()
+let DefaultAuthContextInstance = AuthContext()
 var requestQueue = NSOperationQueue()

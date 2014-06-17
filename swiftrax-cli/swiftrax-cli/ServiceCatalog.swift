@@ -11,9 +11,9 @@ import Foundation
 class ServiceCatalog: NSObject
 {
     
-    init()
-    {
-        println("init service catalog")
+    init() {
+        
+        NSLog("init service catalog")
         authEndpoint = NSURL()
         queue = NSOperationQueue()
         authenticated = false
@@ -24,22 +24,21 @@ class ServiceCatalog: NSObject
         super.init()
     }
     
-    convenience init(user: String, password: String)
-    {
-        println("init service catalog and auth")
+    convenience init(user: String, password: String) {
+        
+        NSLog("init service catalog and auth")
         self.init()
         authenticateToEndpoint(authEndpoint, user: user, password: password)
     }
     
     
-    func authenticateWithUser(user: String, password: String)
-    {
+    func authenticateWithUser(user: String, password: String) {
         authenticateToEndpoint(defaultAuthEndpoint, user: user, password: password)
     }
     
-    func authenticateToEndpoint(endpoint: NSURL, user: String, password: String)
-    {
-        println("authenticating...")
+    func authenticateToEndpoint(endpoint: NSURL, user: String, password: String) {
+        
+        NSLog("authenticating...")
         authEndpoint = endpoint
         self.user = user
         self.password = password
@@ -50,39 +49,34 @@ class ServiceCatalog: NSObject
         request.HTTPBody = body.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
         
         NSURLConnection.sendAsynchronousRequest(request, queue: self.queue as NSOperationQueue, completionHandler: {(response, respData, error) in
-            println("got data async")
-            if let HTTPResponse = response as? NSHTTPURLResponse
-            {
-                self.lastResponse = response
-                if HTTPResponse.statusCode == 200
-                {
-                    println("auth successful")
-                    self.JSONResponse = NSJSONSerialization.JSONObjectWithData(respData, options: NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary
-                    self.updateToken(self.JSONResponse["access"]!["token"]! as NSDictionary)
-                    self.authenticated = true
+                println("got data async")
+                if let HTTPResponse = response as? NSHTTPURLResponse {
+                    self.lastResponse = response
+                    if HTTPResponse.statusCode == 200 {
+                        println("auth successful")
+                        self.JSONResponse = NSJSONSerialization.JSONObjectWithData(respData, options: NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary
+                        self.updateToken(self.JSONResponse["access"]!["token"]! as NSDictionary)
+                        self.authenticated = true
+                    }
+                    else {
+                        NSLog("Bad auth response code: %d", HTTPResponse.statusCode)
+                    }
                 }
-                else
-                {
-                    print("Bad auth response code:")
-                    println(HTTPResponse.statusCode)
+                if let responseError = error {
+                    NSLog(responseError.localizedDescription)
                 }
             }
-            if let responseError = error
-            {
-                NSLog(responseError.localizedDescription)
-            }}
         )
     }
     
-    func reAuthenticate()
-    {
-        println("Re-authenticating...")
+    func reAuthenticate() {
+        NSLog("Re-authenticating...")
         authenticateToEndpoint(authEndpoint, user: user, password: password)
     }
     
-    func updateToken(tokenDict: NSDictionary) -> AuthToken
-    {
-        println("updating token...")
+    func updateToken(tokenDict: NSDictionary) -> AuthToken {
+    
+        NSLog("updating token...")
         token.id = tokenDict["id"]! as String
         token.tenant.id = tokenDict["tenant"]!["id"]! as String
         token.tenant.name = tokenDict["tenant"]!["name"]! as String
