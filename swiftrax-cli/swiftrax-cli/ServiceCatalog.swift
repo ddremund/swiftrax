@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ServiceCatalog
+class ServiceCatalog: NSObject
 {
     
     init()
@@ -16,8 +16,9 @@ class ServiceCatalog
         NSLog("init service catalog")
         queue = NSOperationQueue()
         authenticated = false
-        catalog = NSDictionary()
+        JSONResponse = NSDictionary()
         token = AuthToken()
+        super.init()
     }
     
     convenience init(user: String, password: String)
@@ -37,36 +38,43 @@ class ServiceCatalog
     {
         NSLog("authenticating...")
         let data = "{ \"auth\": { \"passwordCredentials\": {\"username\":\"\(user)\", \"password\":\"\(password)\"}}}"
-        NSLog(data)
         var request = NSMutableURLRequest(URL: endpoint)
         request.HTTPMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.HTTPBody = data.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
-
-        
-        NSLog(NSString(data: request.HTTPBody, encoding: NSUTF8StringEncoding))
-        
         
         NSURLConnection.sendAsynchronousRequest(request, queue: self.queue as NSOperationQueue, completionHandler: {(response, respData, error) in
             NSLog("got data async")
-            self.catalog = NSJSONSerialization.JSONObjectWithData(respData, options: NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary
+            self.JSONResponse = NSJSONSerialization.JSONObjectWithData(respData, options: NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary
             self.lastResponse = response
             //self.token = self.catalog!.objectForKey("access").objectForKey("token") as? NSDictionary}
-            //self.updateToken(self.catalog["access"]["token"] as NSDictionary)
+            self.updateToken(self.JSONResponse["access"]!["token"]! as NSDictionary)
             self.authenticated = true}
         )
     }
     
-    /*func updateToken(tokenDict: NSDictionary)
+    func updateToken(tokenDict: NSDictionary)
     {
-        token.id = tokenDict["id"] as String
-        token.tenant.name = tokenDict["tenant"]["id"] as String
-        token.tenant.id = tokenDict["tenant"]["name"] as String
-    }*/
+        println(tokenDict)
+        token.id = tokenDict["id"]! as String
+        token.tenant.id = tokenDict["tenant"]!["id"]! as String
+        token.tenant.name = tokenDict["tenant"]!["name"]! as String
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        if let date = formatter.dateFromString(tokenDict["expires"]! as String)
+        {
+            token.expiration = date
+        }
+        /*println(token.id)
+        println(token.tenant.id)
+        println(token.tenant.name)
+        formatter.dateFormat = "yyyy MM dd  HH:mm:ss.SSS"
+        println(formatter.stringFromDate(token.expiration))*/
+    }
     
     let authEndpoint = NSURL(string: "https://identity.api.rackspacecloud.com/v2.0/tokens")
     var lastResponse: NSURLResponse?
-    var catalog: NSDictionary
+    var JSONResponse: NSDictionary
     var token: AuthToken
     var queue: NSOperationQueue
     var authenticated: Bool
