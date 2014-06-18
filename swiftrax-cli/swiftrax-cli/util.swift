@@ -9,8 +9,7 @@
 import Foundation
 
 
-func sendRequestToURL(urlPath: String, #method: String, #data: String, #headers: (String, String)[], #delegate: AnyObject) -> NSURLConnection
-{
+func sendRequestToURL(urlPath: String, #method: String, #data: String, #headers: (String, String)[], #delegate: AnyObject) -> NSURLConnection {
     let url = NSURL(string: urlPath)
     var request = NSMutableURLRequest(URL: url)
     request.HTTPMethod = method

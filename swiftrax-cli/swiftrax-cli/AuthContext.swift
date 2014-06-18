@@ -1,5 +1,5 @@
 //
-//  swiftrax.swift
+//  AuthContect.swift
 //  swiftrax-cli
 //
 //  Created by Derek Remund on 6/14/14.
@@ -124,8 +124,7 @@ class AuthContext: NSObject
             if let responseError = error {
                 NSLog(responseError.localizedDescription)
             }
-            }
-        )
+        })
     }
     
     func reAuthenticate() {

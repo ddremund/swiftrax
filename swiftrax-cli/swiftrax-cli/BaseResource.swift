@@ -8,10 +8,8 @@
 
 import Foundation
 
-class BaseResource: NSObject
-{
-    init()
-    {
+class BaseResource: NSObject {
+    init() {
         super.init()
     }
 }
