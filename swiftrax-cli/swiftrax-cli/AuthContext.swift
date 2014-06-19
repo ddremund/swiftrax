@@ -47,7 +47,7 @@ func sendRequestAndReAuth(#url: NSURL, #method: String, #body: String, contentTy
                         sendRequestAndReAuth(url: url, method: method, body: body, contentType: contentType, retry: false, handler)
                     }
                     else {
-                        println("Failure to re-authenticate")
+                        NSLog("Failure to re-authenticate")
                     }
                 }
                 else {
@@ -119,9 +119,11 @@ class AuthContext: NSObject
                 }
                 else {
                     NSLog("Bad auth response code: %d", HTTPResponse.statusCode)
+                    println(self.JSONResponse)
                 }
             }
             if let responseError = error {
+                NSLog("Error in response")
                 NSLog(responseError.localizedDescription)
             }
         })
