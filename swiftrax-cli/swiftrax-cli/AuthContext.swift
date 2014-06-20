@@ -92,7 +92,7 @@ class AuthContext: NSObject
         NSLog("init auth context")
     }
     
-    convenience init(user: String, password: String, authType: AuthType = .Password, authEndpoint: NSURL? = nil) {
+    convenience init(user: String, password: String, authType: AuthType = .Password, authEndpoint: Endpoint? = nil) {
         
         NSLog("init service catalog and auth")
         self.init()
@@ -109,7 +109,7 @@ class AuthContext: NSObject
         authenticateToEndpoint(defaultAuthEndpoint, user: user, password: password, authType: authType)
     }
     
-    func authenticateToEndpoint(endpoint: NSURL, user: String, password: String, authType: AuthType) {
+    func authenticateToEndpoint(endpoint: Endpoint, user: String, password: String, authType: AuthType) {
         
         NSLog("authenticating...")
         authEndpoint = endpoint
@@ -121,7 +121,7 @@ class AuthContext: NSObject
         case .Password: body = "{ \"auth\": { \"passwordCredentials\": {\"username\":\"\(user)\", \"password\":\"\(password)\"}}}"
         case .APIKey: body = "{ \"auth\": { \"RAX-KSKEY:apiKeyCredentials\": {\"username\":\"\(user)\", \"apiKey\":\"\(password)\"}}}"
         }
-        var request = NSMutableURLRequest(URL: endpoint)
+        var request = NSMutableURLRequest(URL: endpoint.publicURL)
         request.HTTPMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.HTTPBody = body.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
@@ -196,8 +196,8 @@ class AuthContext: NSObject
     }
     
     
-    var authEndpoint = NSURL()
-    let defaultAuthEndpoint = NSURL(string: "https://identity.api.rackspacecloud.com/v2.0/tokens")
+    var authEndpoint = Endpoint()
+    let defaultAuthEndpoint = Endpoint(fromURL: "https://identity.api.rackspacecloud.com/v2.0/tokens")
     var user: String = ""
     var password: String = ""
     var authenticated: Bool = false
