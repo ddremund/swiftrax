@@ -110,8 +110,7 @@ typealias ServiceCatalog = Dictionary<String, Service>
 
  @property authEndpoint The Endpoint used for authentication
  @property defaultAuthEndpoint The default Endpoint for API authenticaiton
- @property user The user used when authenticating
- @property password The password or API key used when authenticating
+ @property credentials The username and password/API key used to authenticate
  @property authenticated Boolean representing success of last auth attempt
  @property JSONResponse Contains JSON body of last auth response
  @property authToken Token from last successful auth attempt
@@ -132,34 +131,33 @@ class AuthContext: NSObject
     /**
      Construct a new AuthContext given a set of credentials
     */
-    convenience init(user: String, password: String, authType: AuthType = .Password, authEndpoint: Endpoint? = nil) {
+    convenience init(credentials: (String, String), authType: AuthType = .Password, authEndpoint: Endpoint? = nil) {
         
         NSLog("init service catalog and auth")
         self.init()
         if let endpoint = authEndpoint {
-            authenticateToEndpoint(endpoint, user: user, password: password, authType: authType)
+            authenticateToEndpoint(endpoint, credentials: credentials, authType: authType)
         }
         else {
-            authenticateWithUser(user, password: password, authType: authType)
+            authenticateWithCredentials(credentials, authType: authType)
         }
     }
     
     
-    func authenticateWithUser(user: String, password: String, authType: AuthType) {
-        authenticateToEndpoint(defaultAuthEndpoint, user: user, password: password, authType: authType)
+    func authenticateWithCredentials(credentials: (String, String), authType: AuthType) {
+        authenticateToEndpoint(defaultAuthEndpoint, credentials: credentials, authType: authType)
     }
     
-    func authenticateToEndpoint(endpoint: Endpoint, user: String, password: String, authType: AuthType) {
+    func authenticateToEndpoint(endpoint: Endpoint, credentials: (String, String), authType: AuthType) {
         
         NSLog("authenticating...")
         authEndpoint = endpoint
-        self.user = user
-        self.password = password
+        self.credentials = credentials
         self.token.authType = authType
         var body: String
         switch authType {
-        case .Password: body = "{ \"auth\": { \"passwordCredentials\": {\"username\":\"\(user)\", \"password\":\"\(password)\"}}}"
-        case .APIKey: body = "{ \"auth\": { \"RAX-KSKEY:apiKeyCredentials\": {\"username\":\"\(user)\", \"apiKey\":\"\(password)\"}}}"
+        case .Password: body = "{ \"auth\": { \"passwordCredentials\": {\"username\":\"\(credentials.0)\", \"password\":\"\(credentials.1)\"}}}"
+        case .APIKey: body = "{ \"auth\": { \"RAX-KSKEY:apiKeyCredentials\": {\"username\":\"\(credentials.0)\", \"apiKey\":\"\(credentials.1)\"}}}"
         }
         var request = NSMutableURLRequest(URL: endpoint.publicURL)
         request.HTTPMethod = "POST"
@@ -194,7 +192,7 @@ class AuthContext: NSObject
     
     func reAuthenticate() {
         NSLog("Re-authenticating...")
-        authenticateToEndpoint(authEndpoint, user: user, password: password, authType: token.authType)
+        authenticateToEndpoint(authEndpoint, credentials: self.credentials, authType: token.authType)
     }
     
     func updateToken(tokenDict: NSDictionary) -> AuthToken {
@@ -236,8 +234,8 @@ class AuthContext: NSObject
     
     var authEndpoint = Endpoint()
     let defaultAuthEndpoint = Endpoint(fromURL: "https://identity.api.rackspacecloud.com/v2.0/tokens")
-    var user: String = ""
-    var password: String = ""
+
+    var credentials: (String, String)!
     var authenticated: Bool = false
     
     var JSONResponse = NSDictionary()
