@@ -109,10 +109,10 @@ class AuthContext: NSObject
         
         NSURLConnection.sendAsynchronousRequest(request, queue: self.requestQueue as NSOperationQueue, completionHandler: {(response, responseData, error) in
             println("got data async")
-            if let HTTPResponse = response as? NSHTTPURLResponse {
+            if let HTTPResponse = response as?  NSHTTPURLResponse {
                 self.lastResponse = response
                 if HTTPResponse.statusCode == 200 {
-                    println("auth successful")
+                    NSLog("auth successful")
                     self.JSONResponse = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary
                     self.updateToken(self.JSONResponse["access"]!["token"]! as NSDictionary)
                     self.authenticated = true
