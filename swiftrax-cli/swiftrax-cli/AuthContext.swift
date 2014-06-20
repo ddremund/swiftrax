@@ -78,24 +78,24 @@ class AuthContext: NSObject
         catalog = ServiceCatalog()
     }
     
-    convenience init(user: String, password: String, authEndpoint: NSURL? = nil) {
+    convenience init(user: String, password: String, authType: String = "password", authEndpoint: NSURL? = nil) {
         
         NSLog("init service catalog and auth")
         self.init()
         if let endpoint = authEndpoint {
-            authenticateToEndpoint(endpoint, user: user, password: password)
+            authenticateToEndpoint(endpoint, user: user, password: password, authType: authType)
         }
         else {
-            authenticateWithUser(user, password: password)
+            authenticateWithUser(user, password: password, authType: authType)
         }
     }
     
     
-    func authenticateWithUser(user: String, password: String) {
-        authenticateToEndpoint(defaultAuthEndpoint, user: user, password: password)
+    func authenticateWithUser(user: String, password: String, authType: String = "password") {
+        authenticateToEndpoint(defaultAuthEndpoint, user: user, password: password, authType: authType)
     }
     
-    func authenticateToEndpoint(endpoint: NSURL, user: String, password: String) {
+    func authenticateToEndpoint(endpoint: NSURL, user: String, password: String, authType: String = "password") {
         
         NSLog("authenticating...")
         authEndpoint = endpoint
@@ -119,12 +119,13 @@ class AuthContext: NSObject
                 }
                 else {
                     NSLog("Bad auth response code: %d", HTTPResponse.statusCode)
-                    println(self.JSONResponse)
+                    self.authenticated = false
                 }
             }
             if let responseError = error {
                 NSLog("Error in response")
                 NSLog(responseError.localizedDescription)
+                self.authenticated = false
             }
         })
     }
