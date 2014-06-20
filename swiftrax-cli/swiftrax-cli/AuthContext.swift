@@ -8,15 +8,17 @@
 
 import Foundation
 
+/** An enum representing the type of credentials in use for an AuthContext */
 enum AuthType {
     
     case Password
     case APIKey
 }
 
-
+/** A struct representing an authentication token returned by an auth request to the API */
 struct AuthToken {
     
+    /** A struct representing the tenant portion of an AuthToken */
     struct _tenant {
         var id: String = ""
         var name: String = ""
@@ -39,6 +41,7 @@ struct AuthToken {
     }
 }
 
+/** A struct representing an API endpoint including its URL, region name, and tenant ID */
 struct Endpoint {
     
     var publicURL: NSURL = NSURL()
@@ -46,11 +49,29 @@ struct Endpoint {
     var tenantID: String = ""
     
     init() {}
+    
+    /**
+     Construct a new endpoint given a URL.
+    
+     @param fromURL The URL of the endpoint.
+    */
     init(fromURL URL: String) {
         
         publicURL = NSURL(string: URL)
     }
     
+    /**
+     Construct a new endpoint given a URL and a region
+    
+     @param fromURL The URL of the endpoint
+     @param withRegion The region of the endpoint
+    */
+    init(fromURL URL: String, withRegion region: String) {
+        publicURL = NSURL(string: URL)
+        self.region = region
+    }
+    
+    /** Print an endpoint */
     func print() {
         
         println("Endpoint")
@@ -59,12 +80,16 @@ struct Endpoint {
     }
 }
 
+/** A struct representing a single service in a ServiceCatalog. */
 struct Service {
     
     var name: String = ""
     var type: String = ""
-    var endpoints: Dictionary<String, Endpoint> = [:]
     
+    /** Endpoints indexed by region */
+    var endpoints: Dictionary<String, Endpoint> = [:] /** Endpoints indexed by region */
+    
+    /** Print a Service */
     func print() {
         
         println("Service")
@@ -76,22 +101,37 @@ struct Service {
     }
 }
 
+/** A Dictionary of Services indexed by type */
 typealias ServiceCatalog = Dictionary<String, Service>
 
 
+/**
+ A class representing an authenticated API session
 
+ @property authEndpoint The Endpoint used for authentication
+ @property defaultAuthEndpoint The default Endpoint for API authenticaiton
+ @property user The user used when authenticating
+ @property password The password or API key used when authenticating
+ @property authenticated Boolean representing success of last auth attempt
+ @property JSONResponse Contains JSON body of last auth response
+ @property authToken Token from last successful auth attempt
+ @property catalog Service Catalog from last successful auth attempt
+*/
 class AuthContext: NSObject
 {
-    
+    /** Temporary kludge to account for class vars currently being unsupported */
     class var defaultContext:AuthContext {
         return DefaultAuthContextInstance
     }
-    
+
     init() {
         super.init()
         NSLog("init auth context")
     }
     
+    /**
+     Construct a new AuthContext given a set of credentials
+    */
     convenience init(user: String, password: String, authType: AuthType = .Password, authEndpoint: Endpoint? = nil) {
         
         NSLog("init service catalog and auth")
@@ -130,7 +170,6 @@ class AuthContext: NSObject
         var authTask = session.dataTaskWithRequest(request, completionHandler: {(responseData, response, error) in
             NSLog("got data async")
             if let HTTPResponse = response as?  NSHTTPURLResponse {
-                self.lastResponse = response
                 if HTTPResponse.statusCode == 200 {
                     NSLog("auth successful")
                     self.JSONResponse = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary
@@ -189,12 +228,11 @@ class AuthContext: NSObject
                 newEndpoint.tenantID = endpoint["tenantId"]! as String
                 newService.endpoints[newEndpoint.region] = newEndpoint
             }
-            catalog[newService.name] = newService
+            catalog[newService.type] = newService
         }
         
         return catalog
     }
-    
     
     var authEndpoint = Endpoint()
     let defaultAuthEndpoint = Endpoint(fromURL: "https://identity.api.rackspacecloud.com/v2.0/tokens")
@@ -202,7 +240,6 @@ class AuthContext: NSObject
     var password: String = ""
     var authenticated: Bool = false
     
-    var lastResponse: NSURLResponse?
     var JSONResponse = NSDictionary()
     var token = AuthToken()
     var catalog = ServiceCatalog()
@@ -210,11 +247,12 @@ class AuthContext: NSObject
     
 }
 
+/** Temporary kludge to account for class vars currently being unsupported */
 let DefaultAuthContextInstance = AuthContext()
 
-func sendRequestAndReAuth(#url: NSURL, #method: String, #body: String, contentType: String = "application/json", retry: Bool = true, handler: (NSData, NSURLResponse, NSError)->Void, authContext: AuthContext = AuthContext.defaultContext) {
+func sendRequestToEndpoint(endpoint: Endpoint, #method: String, #body: String, contentType: String = "application/json", retry: Bool = true, #handler: ((NSData!, NSURLResponse!, NSError!)->Void)!, authContext: AuthContext = AuthContext.defaultContext) {
     
-    var request = NSMutableURLRequest(URL: url)
+    var request = NSMutableURLRequest(URL: endpoint.publicURL)
     request.HTTPMethod = method
     request.HTTPBody = body.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
     request.setValue(contentType, forHTTPHeaderField: "Content-Type")
@@ -223,9 +261,10 @@ func sendRequestAndReAuth(#url: NSURL, #method: String, #body: String, contentTy
     var task = session.dataTaskWithRequest(request, completionHandler: {(responseData, response, error) in
         if let HTTPResponse = response as? NSHTTPURLResponse {
             if HTTPResponse.statusCode == 401 {
+                authContext.authenticated = false
                 if retry {
                     authContext.reAuthenticate()
-                    sendRequestAndReAuth(url: url, method: method, body: body, contentType: contentType, retry: false, handler)
+                    sendRequestToEndpoint(endpoint, method: method, body: body, contentType: contentType, retry: false, handler: handler)
                 }
                 else {
                     NSLog("Failure to re-authenticate")
