@@ -63,7 +63,7 @@ struct Service {
     
     var name: String = ""
     var type: String = ""
-    var endpoints: Endpoint[] = []
+    var endpoints: Dictionary<String, Endpoint> = [:]
     
     func print() {
         
@@ -71,12 +71,12 @@ struct Service {
         println("Name: \(name)")
         println("Type: \(type)")
         for endpoint in endpoints {
-            endpoint.print()
+            endpoint.1.print()
         }
     }
 }
 
-typealias ServiceCatalog = Service[]
+typealias ServiceCatalog = Dictionary<String, Service>
 
 
 
@@ -187,9 +187,9 @@ class AuthContext: NSObject
                     newEndpoint.region = region
                 }
                 newEndpoint.tenantID = endpoint["tenantId"]! as String
-                newService.endpoints.append(newEndpoint)
+                newService.endpoints[newEndpoint.region] = newEndpoint
             }
-            catalog.append(newService)
+            catalog[newService.name] = newService
         }
         
         return catalog
