@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		96E07EAF194C1B510011BF96 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E07EAE194C1B510011BF96 /* main.swift */; };
 		96E07EB3194CBE420011BF96 /* util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E07EB2194CBE420011BF96 /* util.swift */; };
-		96E07EB5194CBE5D0011BF96 /* ServiceCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E07EB4194CBE5D0011BF96 /* ServiceCatalog.swift */; };
 		96E07EB7194CC9740011BF96 /* AuthContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E07EB6194CC9740011BF96 /* AuthContext.swift */; };
 		96E07F33194E4F2B0011BF96 /* BaseResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E07F32194E4F2B0011BF96 /* BaseResource.swift */; };
 /* End PBXBuildFile section */
@@ -31,7 +30,6 @@
 		96E07EAD194C1B2F0011BF96 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		96E07EAE194C1B510011BF96 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		96E07EB2194CBE420011BF96 /* util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = util.swift; sourceTree = "<group>"; };
-		96E07EB4194CBE5D0011BF96 /* ServiceCatalog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceCatalog.swift; sourceTree = "<group>"; };
 		96E07EB6194CC9740011BF96 /* AuthContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthContext.swift; sourceTree = "<group>"; };
 		96E07F32194E4F2B0011BF96 /* BaseResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseResource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -79,7 +77,6 @@
 			isa = PBXGroup;
 			children = (
 				96E07F31194E413B0011BF96 /* Resource */,
-				96E07EB4194CBE5D0011BF96 /* ServiceCatalog.swift */,
 				96E07EB6194CC9740011BF96 /* AuthContext.swift */,
 			);
 			name = swiftrax;
@@ -151,7 +148,6 @@
 			files = (
 				96E07EAF194C1B510011BF96 /* main.swift in Sources */,
 				96E07EB7194CC9740011BF96 /* AuthContext.swift in Sources */,
-				96E07EB5194CBE5D0011BF96 /* ServiceCatalog.swift in Sources */,
 				96E07F33194E4F2B0011BF96 /* BaseResource.swift in Sources */,
 				96E07EB3194CBE420011BF96 /* util.swift in Sources */,
 			);
