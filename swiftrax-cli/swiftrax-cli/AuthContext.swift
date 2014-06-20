@@ -130,6 +130,10 @@ class AuthContext: NSObject
     
     /**
      Construct a new AuthContext given a set of credentials
+    
+     @param credentials The username and password/API key used to authenticate
+     @param authType The authentication method to use (.Password or .APIKey)
+     @param authEndpoint The endpoint to use for authentication; defaults to defaultAuthEndpoint
     */
     convenience init(credentials: (String, String), authType: AuthType = .Password, authEndpoint: Endpoint? = nil) {
         
@@ -143,11 +147,23 @@ class AuthContext: NSObject
         }
     }
     
+    /**
+     Authenticate to the default endpoint using a set of credentials
     
+     @param credentials The username and password/API key used to authenticate
+     @param authType The authentication method to use (.Password or .APIKey)
+    */
     func authenticateWithCredentials(credentials: (String, String), authType: AuthType) {
         authenticateToEndpoint(defaultAuthEndpoint, credentials: credentials, authType: authType)
     }
     
+    /**
+     Authenticate to an endpoint
+    
+     @param endpoint The endpoint to use for authentication
+     @param credentials The username and password/API key used to authenticate
+     @param authType The authentication method to use (.Password or .APIKey)
+    */
     func authenticateToEndpoint(endpoint: Endpoint, credentials: (String, String), authType: AuthType) {
         
         NSLog("authenticating...")
@@ -190,11 +206,17 @@ class AuthContext: NSObject
         authTask.resume()
     }
     
+    /** Re-authenticate to the previously-used endpoint using the same credentials */
     func reAuthenticate() {
         NSLog("Re-authenticating...")
         authenticateToEndpoint(authEndpoint, credentials: self.credentials, authType: token.authType)
     }
+
+    /**
+     Update authentication token with new state from JSON data
     
+     @param tokenDict The JSON dictionary data for the authentication token
+    */
     func updateToken(tokenDict: NSDictionary) -> AuthToken {
         
         NSLog("updating token...")
@@ -209,6 +231,11 @@ class AuthContext: NSObject
         return token
     }
 
+    /**
+     Update service catalog with new state from JSON data
+    
+     @param service The JSON array data for the service catalog
+    */
     func updateCatalog(services: NSDictionary[]) -> ServiceCatalog {
 
         for service in services {
@@ -248,6 +275,16 @@ class AuthContext: NSObject
 /** Temporary kludge to account for class vars currently being unsupported */
 let DefaultAuthContextInstance = AuthContext()
 
+/**
+ Perform an HTTP request to a URL endpoint, re-authenticating as necessary
+
+ @param endpoint The endpoint to use for authentication
+ @param method The HTTP method to use
+ @param body The body data for the request
+ @param contentType The Content-Type header info for the request
+ @param Handler The completion handler for the asynchronous request
+ @param retry Whether to retry the request if it fails due to a 401 Unauthorized error
+*/
 func sendRequestToEndpoint(endpoint: Endpoint, #method: String, #body: String, contentType: String = "application/json", retry: Bool = true, #handler: ((NSData!, NSURLResponse!, NSError!)->Void)!, authContext: AuthContext = AuthContext.defaultContext) {
     
     var request = NSMutableURLRequest(URL: endpoint.publicURL)
