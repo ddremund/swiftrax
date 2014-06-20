@@ -32,30 +32,31 @@ struct AuthToken {
     }
 }
 
-func sendRequestAndReAuth(#url: NSURL, #method: String, #body: String, contentType: String = "application/json", retry: Bool = true, handler: (NSURLResponse, NSData, NSError)->Void, authContext: AuthContext = AuthContext.defaultContext) {
+func sendRequestAndReAuth(#url: NSURL, #method: String, #body: String, contentType: String = "application/json", retry: Bool = true, handler: (NSData, NSURLResponse, NSError)->Void, authContext: AuthContext = AuthContext.defaultContext) {
     
     var request = NSMutableURLRequest(URL: url)
     request.HTTPMethod = method
     request.HTTPBody = body.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
     request.setValue(contentType, forHTTPHeaderField: "Content-Type")
-    NSURLConnection.sendAsynchronousRequest(request, queue: authContext.requestQueue, completionHandler:
-        {(response, respData, error) in
-            if let HTTPResponse = response as? NSHTTPURLResponse {
-                if HTTPResponse.statusCode == 401 {
-                    if retry {
-                        authContext.reAuthenticate()
-                        sendRequestAndReAuth(url: url, method: method, body: body, contentType: contentType, retry: false, handler)
-                    }
-                    else {
-                        NSLog("Failure to re-authenticate")
-                    }
+    
+    var session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+    var task = session.dataTaskWithRequest(request, completionHandler: {(responseData, response, error) in
+        if let HTTPResponse = response as? NSHTTPURLResponse {
+            if HTTPResponse.statusCode == 401 {
+                if retry {
+                    authContext.reAuthenticate()
+                    sendRequestAndReAuth(url: url, method: method, body: body, contentType: contentType, retry: false, handler)
                 }
                 else {
-                    handler(response, respData, error)
+                    NSLog("Failure to re-authenticate")
                 }
             }
+            else {
+                handler(responseData, response, error)
+            }
         }
-    )
+    })
+    task.resume()
 }
 
 class AuthContext: NSObject
@@ -69,13 +70,12 @@ class AuthContext: NSObject
         
         NSLog("init auth context")
         authEndpoint = NSURL()
-        requestQueue = NSOperationQueue()
         authenticated = false
         JSONResponse = NSDictionary()
         token = AuthToken()
+        catalog = ServiceCatalog()
         user = ""
         password = ""
-        catalog = ServiceCatalog()
     }
     
     convenience init(user: String, password: String, authType: String = "password", authEndpoint: NSURL? = nil) {
@@ -107,7 +107,8 @@ class AuthContext: NSObject
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.HTTPBody = body.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
         
-        NSURLConnection.sendAsynchronousRequest(request, queue: self.requestQueue as NSOperationQueue, completionHandler: {(response, responseData, error) in
+        var session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        var authTask = session.dataTaskWithRequest(request, completionHandler: {(responseData, response, error) in
             println("got data async")
             if let HTTPResponse = response as?  NSHTTPURLResponse {
                 self.lastResponse = response
@@ -128,6 +129,7 @@ class AuthContext: NSObject
                 self.authenticated = false
             }
         })
+        authTask.resume()
     }
     
     func reAuthenticate() {
@@ -161,8 +163,7 @@ class AuthContext: NSObject
     var JSONResponse: NSDictionary
     var token: AuthToken
     let catalog: ServiceCatalog
-    
-    var requestQueue: NSOperationQueue
+
     
 }
 
