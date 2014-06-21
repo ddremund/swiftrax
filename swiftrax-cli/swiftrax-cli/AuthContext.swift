@@ -80,7 +80,7 @@ struct Endpoint {
     }
 }
 
-/** A struct representing a single service in a ServiceCatalog. */
+/** A struct representing a single service in a ServiceCatalog */
 struct Service {
     
     var name: String = ""
@@ -244,7 +244,7 @@ class AuthContext: NSObject
             newService.name = service["name"]! as String
             newService.type = service["type"]! as String
             
-            for endpoint in service["endpoints"]! as NSDictionary[]{
+            for endpoint in service["endpoints"]! as NSDictionary[] {
                 
                 var newEndpoint = Endpoint(fromURL: endpoint["publicURL"]! as String)
                 if let region = endpoint["region"] as? String {
