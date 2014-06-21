@@ -1,6 +1,6 @@
 //
 //  HTTP.swift
-//  swiftrax_cli
+//  swiftrax
 //
 //  Created by Derek Remund on 6/20/14.
 //  Copyright (c) 2014 Derek Remund. All rights reserved.
