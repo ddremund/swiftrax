@@ -115,6 +115,7 @@ typealias ServiceCatalog = Dictionary<String, Service>
  @property JSONResponse Contains JSON body of last auth response
  @property authToken Token from last successful auth attempt
  @property catalog Service Catalog from last successful auth attempt
+ @property HTTPDebug Sets debugging output for HTTP requests
 */
 class AuthContext: NSObject
 {
@@ -181,9 +182,15 @@ class AuthContext: NSObject
         request.HTTPBody = body.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
         
         var session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        if self.HTTPDebug {
+            logHTTPInfo("Debug Log for authenticateToEndpoint Request", URL: request.URL, method: request.HTTPMethod, headers: request.allHTTPHeaderFields, status: 0, data: request.HTTPBody)
+        }
         var authTask = session.dataTaskWithRequest(request, completionHandler: {(responseData, response, error) in
             NSLog("got data async")
             if let HTTPResponse = response as?  NSHTTPURLResponse {
+                if self.HTTPDebug {
+                    logHTTPInfo("Debug Log for authenticateToEndpoint Reponse", URL: HTTPResponse.URL, method: "N/A", headers: HTTPResponse.allHeaderFields, status: HTTPResponse.statusCode, data: responseData)
+                }
                 if HTTPResponse.statusCode == 200 {
                     NSLog("auth successful")
                     self.JSONResponse = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary
@@ -268,6 +275,8 @@ class AuthContext: NSObject
     var JSONResponse = NSDictionary()
     var token = AuthToken()
     var catalog = ServiceCatalog()
+    
+    var HTTPDebug = false
 
     
 }
@@ -275,40 +284,4 @@ class AuthContext: NSObject
 /** Temporary kludge to account for class vars currently being unsupported */
 let DefaultAuthContextInstance = AuthContext()
 
-/**
- Perform an HTTP request to a URL endpoint, re-authenticating as necessary
 
- @param endpoint The endpoint to use for authentication
- @param method The HTTP method to use
- @param body The body data for the request
- @param contentType The Content-Type header info for the request
- @param Handler The completion handler for the asynchronous request
- @param retry Whether to retry the request if it fails due to a 401 Unauthorized error
-*/
-func sendRequestToEndpoint(endpoint: Endpoint, #method: String, #body: String, contentType: String = "application/json", retry: Bool = true, #handler: ((NSData!, NSURLResponse!, NSError!)->Void)!, authContext: AuthContext = AuthContext.defaultContext) {
-    
-    var request = NSMutableURLRequest(URL: endpoint.publicURL)
-    request.HTTPMethod = method
-    request.HTTPBody = body.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
-    request.setValue(contentType, forHTTPHeaderField: "Content-Type")
-    
-    var session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-    var task = session.dataTaskWithRequest(request, completionHandler: {(responseData, response, error) in
-        if let HTTPResponse = response as? NSHTTPURLResponse {
-            if HTTPResponse.statusCode == 401 {
-                authContext.authenticated = false
-                if retry {
-                    authContext.reAuthenticate()
-                    sendRequestToEndpoint(endpoint, method: method, body: body, contentType: contentType, retry: false, handler: handler)
-                }
-                else {
-                    NSLog("Failure to re-authenticate")
-                }
-            }
-            else {
-                handler(responseData, response, error)
-            }
-        }
-        })
-    task.resume()
-}
