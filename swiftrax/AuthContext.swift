@@ -188,16 +188,8 @@ class AuthContext: NSObject
         case .Password: body = "{ \"auth\": { \"passwordCredentials\": {\"username\":\"\(credentials.0)\", \"password\":\"\(credentials.1)\"}}}"
         case .APIKey: body = "{ \"auth\": { \"RAX-KSKEY:apiKeyCredentials\": {\"username\":\"\(credentials.0)\", \"apiKey\":\"\(credentials.1)\"}}}"
         }
-        var request = NSMutableURLRequest(URL: endpoint.publicURL)
-        request.HTTPMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.HTTPBody = body.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
         
-        var session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-        if self.HTTPDebug {
-            logHTTPInfo("Debug Log for authenticateToEndpoint Request", URL: request.URL, method: request.HTTPMethod, headers: request.allHTTPHeaderFields, status: 0, data: request.HTTPBody)
-        }
-        var authTask = session.dataTaskWithRequest(request, completionHandler: {(responseData, response, error) in
+        sendRequestToEndpoint(endpoint, method: "POST", body: body, contentType: "application/json", retry: false, handler: {(responseData, response, error) in
             NSLog("got data async")
             if let HTTPResponse = response as?  NSHTTPURLResponse {
                 if self.HTTPDebug {
@@ -221,8 +213,7 @@ class AuthContext: NSObject
                 NSLog(responseError.localizedDescription)
                 self.authenticated = false
             }
-        })
-        authTask.resume()
+        }, authContext: self)
     }
     
     /** Re-authenticate to the previously-used endpoint using the same credentials */
