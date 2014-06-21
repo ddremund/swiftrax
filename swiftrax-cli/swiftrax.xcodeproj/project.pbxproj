@@ -28,8 +28,7 @@
 
 /* Begin PBXFileReference section */
 		04370185195515B600AA200E /* HTTP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
-		96E07E05194C02EC0011BF96 /* swiftrax_cli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = swiftrax_cli; sourceTree = BUILT_PRODUCTS_DIR; };
-		96E07EAD194C1B2F0011BF96 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
+		96E07E05194C02EC0011BF96 /* swiftrax */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = swiftrax; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E07EAE194C1B510011BF96 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		96E07EB2194CBE420011BF96 /* util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = util.swift; sourceTree = "<group>"; };
 		96E07EB6194CC9740011BF96 /* AuthContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthContext.swift; sourceTree = "<group>"; };
@@ -50,7 +49,7 @@
 		96E07DFC194C02EC0011BF96 = {
 			isa = PBXGroup;
 			children = (
-				96E07E07194C02EC0011BF96 /* swiftrax_cli */,
+				96E07E07194C02EC0011BF96 /* swiftrax */,
 				96E07E06194C02EC0011BF96 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -58,31 +57,22 @@
 		96E07E06194C02EC0011BF96 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				96E07E05194C02EC0011BF96 /* swiftrax_cli */,
+				96E07E05194C02EC0011BF96 /* swiftrax */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		96E07E07194C02EC0011BF96 /* swiftrax_cli */ = {
+		96E07E07194C02EC0011BF96 /* swiftrax */ = {
 			isa = PBXGroup;
 			children = (
-				96E07F30194D7E110011BF96 /* swiftrax */,
-				96E07EAD194C1B2F0011BF96 /* MyPlayground.playground */,
-				96E07EAE194C1B510011BF96 /* main.swift */,
 				96E07EB2194CBE420011BF96 /* util.swift */,
-			);
-			name = swiftrax_cli;
-			path = "swiftrax-cli";
-			sourceTree = "<group>";
-		};
-		96E07F30194D7E110011BF96 /* swiftrax */ = {
-			isa = PBXGroup;
-			children = (
-				04370185195515B600AA200E /* HTTP.swift */,
-				96E07F31194E413B0011BF96 /* Resource */,
+				96E07EAE194C1B510011BF96 /* main.swift */,
 				96E07EB6194CC9740011BF96 /* AuthContext.swift */,
+				96E07F31194E413B0011BF96 /* Resource */,
+				04370185195515B600AA200E /* HTTP.swift */,
 			);
 			name = swiftrax;
+			path = "swiftrax-cli";
 			sourceTree = "<group>";
 		};
 		96E07F31194E413B0011BF96 /* Resource */ = {
@@ -96,9 +86,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		96E07E04194C02EC0011BF96 /* swiftrax_cli */ = {
+		96E07E04194C02EC0011BF96 /* swiftrax */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 96E07E0C194C02EC0011BF96 /* Build configuration list for PBXNativeTarget "swiftrax_cli" */;
+			buildConfigurationList = 96E07E0C194C02EC0011BF96 /* Build configuration list for PBXNativeTarget "swiftrax" */;
 			buildPhases = (
 				96E07E01194C02EC0011BF96 /* Sources */,
 				96E07E02194C02EC0011BF96 /* Frameworks */,
@@ -108,9 +98,9 @@
 			);
 			dependencies = (
 			);
-			name = swiftrax_cli;
+			name = swiftrax;
 			productName = "swiftrax-cli";
-			productReference = 96E07E05194C02EC0011BF96 /* swiftrax_cli */;
+			productReference = 96E07E05194C02EC0011BF96 /* swiftrax */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -127,7 +117,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 96E07E00194C02EC0011BF96 /* Build configuration list for PBXProject "swiftrax_cli" */;
+			buildConfigurationList = 96E07E00194C02EC0011BF96 /* Build configuration list for PBXProject "swiftrax" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -139,7 +129,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				96E07E04194C02EC0011BF96 /* swiftrax_cli */,
+				96E07E04194C02EC0011BF96 /* swiftrax */,
 			);
 		};
 /* End PBXProject section */
@@ -240,7 +230,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_NAME = swiftrax_cli;
+				PRODUCT_NAME = swiftrax;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -251,14 +241,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_NAME = swiftrax_cli;
+				PRODUCT_NAME = swiftrax;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		96E07E00194C02EC0011BF96 /* Build configuration list for PBXProject "swiftrax_cli" */ = {
+		96E07E00194C02EC0011BF96 /* Build configuration list for PBXProject "swiftrax" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				96E07E0A194C02EC0011BF96 /* Debug */,
@@ -267,7 +257,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		96E07E0C194C02EC0011BF96 /* Build configuration list for PBXNativeTarget "swiftrax_cli" */ = {
+		96E07E0C194C02EC0011BF96 /* Build configuration list for PBXNativeTarget "swiftrax" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				96E07E0D194C02EC0011BF96 /* Debug */,
