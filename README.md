@@ -1,5 +1,4 @@
 #swiftrax
-========
 
 iOS/OS X Library for the Rackspace Cloud API
 
