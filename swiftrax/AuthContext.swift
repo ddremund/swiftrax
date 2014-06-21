@@ -265,7 +265,6 @@ class AuthContext: NSObject
             }
             catalog[newService.type] = newService
         }
-        
         return catalog
     }
     

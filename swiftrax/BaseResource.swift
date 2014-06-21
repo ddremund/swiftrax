@@ -25,6 +25,18 @@ class BaseResource: NSObject {
     init() {
         super.init()
     }
+    
+    func get() -> BaseResource
+    {
+        return self
+    }
+    
+    func setDetails(details: NSDictionary)
+    {
+        return
+    }
+    
+    var name: String = ""
 }
 
 

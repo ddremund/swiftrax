@@ -11,7 +11,6 @@
 		043D461819551E9200C9B4B7 /* AuthContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D461319551E9200C9B4B7 /* AuthContext.swift */; };
 		043D461919551E9200C9B4B7 /* BaseResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D461419551E9200C9B4B7 /* BaseResource.swift */; };
 		043D461A19551E9200C9B4B7 /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D461519551E9200C9B4B7 /* HTTP.swift */; };
-		043D461C19551E9200C9B4B7 /* util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D461719551E9200C9B4B7 /* util.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,7 +30,6 @@
 		043D461319551E9200C9B4B7 /* AuthContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthContext.swift; sourceTree = "<group>"; };
 		043D461419551E9200C9B4B7 /* BaseResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseResource.swift; sourceTree = "<group>"; };
 		043D461519551E9200C9B4B7 /* HTTP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
-		043D461719551E9200C9B4B7 /* util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = util.swift; sourceTree = "<group>"; };
 		96E07E05194C02EC0011BF96 /* swiftrax */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = swiftrax; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -53,7 +51,6 @@
 				043D461319551E9200C9B4B7 /* AuthContext.swift */,
 				043D461419551E9200C9B4B7 /* BaseResource.swift */,
 				043D461519551E9200C9B4B7 /* HTTP.swift */,
-				043D461719551E9200C9B4B7 /* util.swift */,
 				96E07E06194C02EC0011BF96 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -125,7 +122,6 @@
 				043D461A19551E9200C9B4B7 /* HTTP.swift in Sources */,
 				040750191955221900F02699 /* main.swift in Sources */,
 				043D461919551E9200C9B4B7 /* BaseResource.swift in Sources */,
-				043D461C19551E9200C9B4B7 /* util.swift in Sources */,
 				043D461819551E9200C9B4B7 /* AuthContext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
