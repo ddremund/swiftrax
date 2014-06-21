@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		04370186195515B600AA200E /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04370185195515B600AA200E /* HTTP.swift */; };
-		96E07EAF194C1B510011BF96 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E07EAE194C1B510011BF96 /* main.swift */; };
-		96E07EB3194CBE420011BF96 /* util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E07EB2194CBE420011BF96 /* util.swift */; };
-		96E07EB7194CC9740011BF96 /* AuthContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E07EB6194CC9740011BF96 /* AuthContext.swift */; };
-		96E07F33194E4F2B0011BF96 /* BaseResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E07F32194E4F2B0011BF96 /* BaseResource.swift */; };
+		043D461819551E9200C9B4B7 /* AuthContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D461319551E9200C9B4B7 /* AuthContext.swift */; };
+		043D461919551E9200C9B4B7 /* BaseResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D461419551E9200C9B4B7 /* BaseResource.swift */; };
+		043D461A19551E9200C9B4B7 /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D461519551E9200C9B4B7 /* HTTP.swift */; };
+		043D461B19551E9200C9B4B7 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D461619551E9200C9B4B7 /* main.swift */; };
+		043D461C19551E9200C9B4B7 /* util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D461719551E9200C9B4B7 /* util.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,12 +27,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		04370185195515B600AA200E /* HTTP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
+		043D461319551E9200C9B4B7 /* AuthContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthContext.swift; sourceTree = "<group>"; };
+		043D461419551E9200C9B4B7 /* BaseResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseResource.swift; sourceTree = "<group>"; };
+		043D461519551E9200C9B4B7 /* HTTP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
+		043D461619551E9200C9B4B7 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		043D461719551E9200C9B4B7 /* util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = util.swift; sourceTree = "<group>"; };
 		96E07E05194C02EC0011BF96 /* swiftrax */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = swiftrax; sourceTree = BUILT_PRODUCTS_DIR; };
-		96E07EAE194C1B510011BF96 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		96E07EB2194CBE420011BF96 /* util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = util.swift; sourceTree = "<group>"; };
-		96E07EB6194CC9740011BF96 /* AuthContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthContext.swift; sourceTree = "<group>"; };
-		96E07F32194E4F2B0011BF96 /* BaseResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseResource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,7 +49,11 @@
 		96E07DFC194C02EC0011BF96 = {
 			isa = PBXGroup;
 			children = (
-				96E07E07194C02EC0011BF96 /* swiftrax */,
+				043D461319551E9200C9B4B7 /* AuthContext.swift */,
+				043D461419551E9200C9B4B7 /* BaseResource.swift */,
+				043D461519551E9200C9B4B7 /* HTTP.swift */,
+				043D461619551E9200C9B4B7 /* main.swift */,
+				043D461719551E9200C9B4B7 /* util.swift */,
 				96E07E06194C02EC0011BF96 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -60,27 +64,6 @@
 				96E07E05194C02EC0011BF96 /* swiftrax */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		96E07E07194C02EC0011BF96 /* swiftrax */ = {
-			isa = PBXGroup;
-			children = (
-				96E07EB2194CBE420011BF96 /* util.swift */,
-				96E07EAE194C1B510011BF96 /* main.swift */,
-				96E07EB6194CC9740011BF96 /* AuthContext.swift */,
-				96E07F31194E413B0011BF96 /* Resource */,
-				04370185195515B600AA200E /* HTTP.swift */,
-			);
-			name = swiftrax;
-			path = "swiftrax-cli";
-			sourceTree = "<group>";
-		};
-		96E07F31194E413B0011BF96 /* Resource */ = {
-			isa = PBXGroup;
-			children = (
-				96E07F32194E4F2B0011BF96 /* BaseResource.swift */,
-			);
-			name = Resource;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,11 +122,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04370186195515B600AA200E /* HTTP.swift in Sources */,
-				96E07EAF194C1B510011BF96 /* main.swift in Sources */,
-				96E07EB7194CC9740011BF96 /* AuthContext.swift in Sources */,
-				96E07F33194E4F2B0011BF96 /* BaseResource.swift in Sources */,
-				96E07EB3194CBE420011BF96 /* util.swift in Sources */,
+				043D461A19551E9200C9B4B7 /* HTTP.swift in Sources */,
+				043D461919551E9200C9B4B7 /* BaseResource.swift in Sources */,
+				043D461B19551E9200C9B4B7 /* main.swift in Sources */,
+				043D461C19551E9200C9B4B7 /* util.swift in Sources */,
+				043D461819551E9200C9B4B7 /* AuthContext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
