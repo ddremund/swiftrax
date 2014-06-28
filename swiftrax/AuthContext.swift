@@ -41,6 +41,7 @@ struct AuthToken {
     var expiration = NSDate()
     var authType: AuthType = .Password
     
+    /** Print an AuthToken */
     func print() {
         
         println("Auth Token")
