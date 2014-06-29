@@ -54,44 +54,6 @@ struct AuthToken {
     }
 }
 
-/** A struct representing an API endpoint including its URL, region name, and tenant ID */
-struct Endpoint {
-    
-    var publicURL: NSURL = NSURL()
-    var region: String = ""
-    var tenantID: String = ""
-    
-    init() {}
-    
-    /**
-     Construct a new endpoint given a URL.
-    
-     @param fromURL The URL of the endpoint.
-    */
-    init(fromURL URL: String) {
-        
-        publicURL = NSURL(string: URL)
-    }
-    
-    /**
-     Construct a new endpoint given a URL and a region
-    
-     @param fromURL The URL of the endpoint
-     @param withRegion The region of the endpoint
-    */
-    init(fromURL URL: String, withRegion region: String) {
-        publicURL = NSURL(string: URL)
-        self.region = region
-    }
-    
-    /** Print an endpoint */
-    func print() {
-        
-        println("Endpoint")
-        println("Public URL: \(publicURL.absoluteString)")
-        println("Tenant ID: \(tenantID)")
-    }
-}
 
 /** A struct representing a single service in a ServiceCatalog */
 struct Service {
@@ -125,7 +87,7 @@ typealias ServiceCatalog = Dictionary<String, Service>
  @property defaultAuthEndpoint The default Endpoint for API authenticaiton
  @property credentials The username and password/API key used to authenticate
  @property authenticated Boolean representing success of last auth attempt
- @property JSONResponse Contains JSON body of last auth response
+ @property authJSONResponse Contains JSON body of last auth response
  @property authToken Token from last successful auth attempt
  @property catalog Service Catalog from last successful auth attempt
  @property HTTPDebug Sets debugging output for HTTP requests
@@ -198,9 +160,9 @@ class AuthContext: NSObject
                 }
                 if HTTPResponse.statusCode == 200 {
                     NSLog("auth successful")
-                    self.JSONResponse = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary
-                    self.updateToken(self.JSONResponse["access"]!["token"]! as NSDictionary)
-                    self.updateCatalog(self.JSONResponse["access"]!["serviceCatalog"]! as NSDictionary[])
+                    self.authJSONResponse = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary
+                    self.updateToken(self.authJSONResponse["access"]!["token"]! as NSDictionary)
+                    self.updateCatalog(self.authJSONResponse["access"]!["serviceCatalog"]! as NSDictionary[])
                     self.authenticated = true
                 }
                 else {
@@ -275,12 +237,11 @@ class AuthContext: NSObject
     var credentials: (String, String)!
     var authenticated: Bool = false
     
-    var JSONResponse = NSDictionary()
+    var authJSONResponse = NSDictionary()
     var token = AuthToken()
     var catalog = ServiceCatalog()
     
     var HTTPDebug = false
-
     
 }
 

@@ -10,24 +10,44 @@ import Foundation
 
 class ServiceManager: NSObject {
     
+    init() {
+        
+        super.init()
+    }
+    
+    convenience init(endpoint: Endpoint) {
+        
+        self.init()
+        self.endpoint = endpoint
+    }
+    
     func create() {
         
     }
     
-    func get() {
+    func head() {
         
     }
+    
+    func get(id: String) -> BaseResource {
+        
+        return BaseResource(id: id)
+    }
+    
+    func update(resource: BaseResource) -> BaseResource {
+       
+        return resource
+    }
+    
     
     func list() {
-        
-    }
-    
-    func update() {
         
     }
     
     func delete() {
         
     }
+    
+    var endpoint: Endpoint!
     
 }

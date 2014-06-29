@@ -21,6 +21,45 @@
 import Foundation
 
 
+/** A struct representing an API endpoint including its URL, region name, and tenant ID */
+struct Endpoint {
+    
+    var publicURL: NSURL = NSURL()
+    var region: String = ""
+    var tenantID: String = ""
+    
+    init() {}
+    
+    /**
+    Construct a new endpoint given a URL.
+    
+    @param fromURL The URL of the endpoint.
+    */
+    init(fromURL URL: String) {
+        
+        publicURL = NSURL(string: URL)
+    }
+    
+    /**
+    Construct a new endpoint given a URL and a region
+    
+    @param fromURL The URL of the endpoint
+    @param withRegion The region of the endpoint
+    */
+    init(fromURL URL: String, withRegion region: String) {
+        publicURL = NSURL(string: URL)
+        self.region = region
+    }
+    
+    /** Print an endpoint */
+    func print() {
+        
+        println("Endpoint")
+        println("Public URL: \(publicURL.absoluteString)")
+        println("Tenant ID: \(tenantID)")
+    }
+}
+
 /**
  Perform an HTTP request to a URL endpoint, re-authenticating as necessary
 

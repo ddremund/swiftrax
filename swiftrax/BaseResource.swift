@@ -22,21 +22,34 @@
 import Foundation
 
 class BaseResource: NSObject {
+    
     init() {
+        
         super.init()
     }
     
-    func get() -> BaseResource
-    {
-        return self
+    convenience init(id: String) {
+        
+        self.init()
+        self.id = id
     }
     
-    func setDetails(details: NSDictionary)
-    {
+    func update() -> BaseResource {
+        
+        return manager.update(self)
+    }
+    
+    func delete() {
+        return
+    }
+    
+    func setDetails(details: NSDictionary) {
         return
     }
     
     var name: String = ""
+    var id: String = ""
+    var manager: ServiceManager!
 }
 
 
