@@ -99,7 +99,7 @@ class AuthContext: NSObject
         return DefaultAuthContextInstance
     }
 
-    init() {
+    override init() {
         super.init()
         NSLog("init auth context")
     }
@@ -162,7 +162,7 @@ class AuthContext: NSObject
                     NSLog("auth successful")
                     self.authJSONResponse = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary
                     self.updateToken(self.authJSONResponse["access"]!["token"]! as NSDictionary)
-                    self.updateCatalog(self.authJSONResponse["access"]!["serviceCatalog"]! as NSDictionary[])
+                    self.updateCatalog(self.authJSONResponse["access"]!["serviceCatalog"]! as [NSDictionary])
                     self.authenticated = true
                 }
                 else {
@@ -209,7 +209,7 @@ class AuthContext: NSObject
     
      @param service The JSON array data for the service catalog
     */
-    func updateCatalog(services: NSDictionary[]) -> ServiceCatalog {
+    func updateCatalog(services: [NSDictionary]) -> ServiceCatalog {
 
         for service in services {
             
@@ -217,7 +217,7 @@ class AuthContext: NSObject
             newService.name = service["name"]! as String
             newService.type = service["type"]! as String
             
-            for endpoint in service["endpoints"]! as NSDictionary[] {
+            for endpoint in service["endpoints"]! as [NSDictionary] {
                 
                 var newEndpoint = Endpoint(fromURL: endpoint["publicURL"]! as String)
                 if let region = endpoint["region"] as? String {

@@ -23,7 +23,7 @@ import Foundation
 
 class BaseResource: NSObject {
     
-    init() {
+    override init() {
         
         super.init()
     }

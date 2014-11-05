@@ -35,9 +35,14 @@ struct Endpoint {
     
     @param fromURL The URL of the endpoint.
     */
-    init(fromURL URL: String) {
+    init?(fromURL URL: String) {
         
-        publicURL = NSURL(string: URL)
+        if let url = NSURL(string: URL) {
+            publicURL = url
+        }
+        else {
+            return nil
+        }
     }
     
     /**
@@ -46,8 +51,14 @@ struct Endpoint {
     @param fromURL The URL of the endpoint
     @param withRegion The region of the endpoint
     */
-    init(fromURL URL: String, withRegion region: String) {
-        publicURL = NSURL(string: URL)
+    init?(fromURL URL: String, withRegion region: String) {
+
+        if let url = NSURL(string: URL) {
+            publicURL = url
+        }
+        else {
+            return nil
+        }
         self.region = region
     }
     
@@ -79,12 +90,12 @@ func sendRequestToEndpoint(endpoint: Endpoint, #method: String, #body: String, c
     
     var session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
     if authContext.HTTPDebug {
-        logHTTPInfo("Debug Log for authenticateToEndpoint Request", URL: request.URL, method: request.HTTPMethod, headers: request.allHTTPHeaderFields, status: 0, data: request.HTTPBody)
+        logHTTPInfo("Debug Log for authenticateToEndpoint Request", URL: request.URL!, method: request.HTTPMethod, headers: request.allHTTPHeaderFields!, status: 0, data: request.HTTPBody!)
     }
     var task = session.dataTaskWithRequest(request, completionHandler: {(responseData, response, error) in
         if let HTTPResponse = response as? NSHTTPURLResponse {
             if authContext.HTTPDebug {
-                logHTTPInfo("Debug Log for sendRequestToEndpoint", URL: HTTPResponse.URL, method: "N/A", headers: HTTPResponse.allHeaderFields, status: HTTPResponse.statusCode, data: responseData)
+                logHTTPInfo("Debug Log for sendRequestToEndpoint", URL: HTTPResponse.URL!, method: "N/A", headers: HTTPResponse.allHeaderFields, status: HTTPResponse.statusCode, data: responseData)
                 
             }
             if HTTPResponse.statusCode == 401 {
@@ -118,10 +129,10 @@ func logHTTPInfo(banner: String, #URL: NSURL, #method: String, #headers: NSDicti
     
     NSLog("--")
     NSLog(banner)
-    NSLog("URL: %@", URL.absoluteString)
+    NSLog("URL: %@", URL.absoluteString!)
     NSLog("Method: %@", method)
     NSLog("Headers: %@", headers)
     NSLog("Status: %i", status)
-    NSLog("Data: %@", NSString(data: data, encoding: NSUTF8StringEncoding))
+    NSLog("Data: %@", NSString(data: data, encoding: NSUTF8StringEncoding)!)
     NSLog("--")
 }
