@@ -156,7 +156,7 @@ class AuthContext: NSObject
             NSLog("got data async")
             if let HTTPResponse = response as?  NSHTTPURLResponse {
                 if self.HTTPDebug {
-                    logHTTPInfo("Debug Log for authenticateToEndpoint Reponse", URL: HTTPResponse.URL, method: "N/A", headers: HTTPResponse.allHeaderFields, status: HTTPResponse.statusCode, data: responseData)
+                    logHTTPInfo("Debug Log for authenticateToEndpoint Reponse", URL: HTTPResponse.URL!, method: "N/A", headers: HTTPResponse.allHeaderFields, status: HTTPResponse.statusCode, data: responseData)
                 }
                 if HTTPResponse.statusCode == 200 {
                     NSLog("auth successful")
@@ -219,7 +219,7 @@ class AuthContext: NSObject
             
             for endpoint in service["endpoints"]! as [NSDictionary] {
                 
-                var newEndpoint = Endpoint(fromURL: endpoint["publicURL"]! as String)
+                var newEndpoint = Endpoint(fromURL: endpoint["publicURL"]! as String)!
                 if let region = endpoint["region"] as? String {
                     newEndpoint.region = region
                 }
@@ -232,7 +232,7 @@ class AuthContext: NSObject
     }
     
     var authEndpoint = Endpoint()
-    let defaultAuthEndpoint = Endpoint(fromURL: "https://identity.api.rackspacecloud.com/v2.0/tokens")
+    let defaultAuthEndpoint = Endpoint(fromURL: "https://identity.api.rackspacecloud.com/v2.0/tokens")!
 
     var credentials: (String, String)!
     var authenticated: Bool = false
